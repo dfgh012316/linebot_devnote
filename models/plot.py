@@ -25,12 +25,16 @@ def return_message(data,input_data):
 
 
 def picture(data,ID):
-    df=data.loc[data['ID']==ID].fillna(0)
+    df=data.loc[data['ID']==ID].fillna(0)            #處理尚未填入成績的空欄位
     
-    grade=[int(df[i]) for i in df.columns[2:8]]
-    subject=[i for i in df.columns[2:8]]
+    grade=[int(df[i]) for i in df.columns[2:8]]      #成績  
+    subject=[i for i in df.columns[2:8]]             #科目
 
-    x=np.arange(len(subject))
+    '''
+    [2:8]為截取成績單中的第2欄到第7欄中的科目
+    '''
+
+    x=np.arange(len(subject))                       #取得科目數量
     plt.bar(x,grade,tick_label=subject,color='blue')  
     for a,b in zip([i for i in range(6)],df.columns[2:8]):
         plt.text(a,int(df[b]),int(df[b]),size=18,horizontalalignment='center')
@@ -40,7 +44,7 @@ def picture(data,ID):
     plt.ylim(0,100)
     plt.savefig('static\\{}.png'.format(ID))
     plt.close()
-    return 'https://8fc4a9d93111.ngrok.io//static//{}.png'.format(ID)
+    return 'https://0058a7e0365b.ngrok.io//static//{}.png'.format(ID)
 
 
 if __name__ == '__main__':
