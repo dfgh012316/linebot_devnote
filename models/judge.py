@@ -37,4 +37,5 @@ if __name__ == '__main__' :
     print(standar)
     print(judge(standar,data,ID))
     pass_subject=judge(standar,data,ID)
+    print(pass_subject)
     print(return_pass_subject(pass_subject))

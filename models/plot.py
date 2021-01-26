@@ -44,11 +44,12 @@ def picture(data,ID):
     plt.ylim(0,100)
     plt.savefig('static\\{}.png'.format(ID))
     plt.close()
-    return 'https://0058a7e0365b.ngrok.io//static//{}.png'.format(ID)
+    return 'https://2fdec7093950.ngrok.io//static//{}.png'.format(ID)
 
 
 if __name__ == '__main__':
-    picture(data,'b0742024')
+    print(picture(data,'b0742024'))
+    print(return_message(data,'b0742024'))
 
 
 
