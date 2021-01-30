@@ -7,21 +7,25 @@ plt.switch_backend('agg') #不需要圖形介面的的backend
 plt.rcParams['font.sans-serif'] = ['Taipei Sans TC Beta'] #顯示中文字
 
 def search_ID_DICT(ID):
-    a=data.loc[data['ID']==ID]
-    data_dict=a.to_dict('list')
-    return data_dict
+    try:
+        a=data.loc[data['ID']==ID]
+        data_dict=a.to_dict('list')
+        return data_dict
+    except :
+        return False
 
 def return_message(data,input_data):
-    content='學號:'+str(search_ID_DICT(input_data)['ID']).replace('[','').replace(']','')+'\n'+\
-            '姓名:'+str(search_ID_DICT(input_data)['姓名']).replace('[','').replace(']','')+'\n'+\
-            '記憶:'+str(search_ID_DICT(input_data)['記憶']).replace('[','').replace(']','')+'\n'+\
-            '理解:'+str(search_ID_DICT(input_data)['理解']).replace('[','').replace(']','')+'\n'+\
-            '應用:'+str(search_ID_DICT(input_data)['應用']).replace('[','').replace(']','')+'\n'+\
-            '分析:'+str(search_ID_DICT(input_data)['分析']).replace('[','').replace(']','')+'\n'+\
-            '評鑑:'+str(search_ID_DICT(input_data)['評鑑']).replace('[','').replace(']','')+'\n'+\
-            '創意:'+str(search_ID_DICT(input_data)['創意']).replace('[','').replace(']','')
+    if search_ID_DICT(input_data) == False :
+        return "查無此學號"
+    else :
+        content='記憶:'+str(search_ID_DICT(input_data)['記憶']).replace('[','').replace(']','')+'\n'+\
+                '理解:'+str(search_ID_DICT(input_data)['理解']).replace('[','').replace(']','')+'\n'+\
+                '應用:'+str(search_ID_DICT(input_data)['應用']).replace('[','').replace(']','')+'\n'+\
+                '分析:'+str(search_ID_DICT(input_data)['分析']).replace('[','').replace(']','')+'\n'+\
+                '評鑑:'+str(search_ID_DICT(input_data)['評鑑']).replace('[','').replace(']','')+'\n'+\
+                '創意:'+str(search_ID_DICT(input_data)['創意']).replace('[','').replace(']','')
 
-    return content
+        return content
 
 
 def picture(data,ID):
@@ -42,9 +46,9 @@ def picture(data,ID):
     plt.ylabel('成績')
     plt.title(ID)
     plt.ylim(0,100)
-    plt.savefig('static\\{}.png'.format(ID))
+    plt.savefig('static//{}.png'.format(ID))
     plt.close()
-    return 'https://2fdec7093950.ngrok.io//static//{}.png'.format(ID)
+    return 'https://32fd4f5f25ee.ngrok.io//static//{}.png'.format(ID)  #mac上改用 /  win上用//
 
 
 if __name__ == '__main__':
