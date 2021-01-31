@@ -11,7 +11,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent,
     TemplateSendMessage,ButtonsTemplate,MessageTemplateAction,FlexSendMessage
 )
-from models.plot import return_message,picture,judge,return_pass_subject
+from models.plot import return_message,picture,judge,return_pass_subject,create_data
 import pandas as pd
 app = Flask(__name__)
 
@@ -23,7 +23,7 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 #讀取成績單及通過標準
-data=pd.read_csv('測試成績單.csv')
+data=create_data()
 standar={'memory':80,'understand':70,'application':60,'analyse':60,'judge':60,'cool':60}
 
 @app.route("/callback", methods=['POST'])
@@ -50,7 +50,7 @@ def handle_message(event):
         reply_arr=[]                           #回覆的訊息list
         input_data=event.message.text.lower()  #大小寫都可搜尋
         content=return_message(data,input_data) #回覆成績資料
-        grade_picture=picture(data,input_data)  #生成圖表及回傳URL
+        grade_picture=picture(standar,data,input_data)  #生成圖表及回傳URL
         pass_subject=judge(standar,data,input_data)  #產生通過的科目List
         content2=return_pass_subject(pass_subject)
         reply_arr.append(TextSendMessage(content))  #將文字訊系放入reply陣列
@@ -61,7 +61,7 @@ def handle_message(event):
                 package_id='11537',
                 sticker_id='52002735')
                 )
-            line_bot_api.reply_message(
+        line_bot_api.reply_message(
                 event.reply_token,reply_arr)
     except :
         line_bot_api.reply_message(

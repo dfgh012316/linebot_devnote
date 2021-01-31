@@ -125,11 +125,14 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-*.csv
-
 *# Pyre type checker
 .pyre/
 #圖片檔
 *.jpg
 *.png
 *.ipynb
+
+
+#成績單檔案
+*.xlsx
+*.csv
