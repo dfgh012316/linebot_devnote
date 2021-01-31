@@ -132,3 +132,4 @@ dmypy.json
 #圖片檔
 *.jpg
 *.png
+*.ipynb

@@ -11,8 +11,7 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent,
     TemplateSendMessage,ButtonsTemplate,MessageTemplateAction,FlexSendMessage
 )
-from models.plot import return_message,picture
-from models.judge import judge,return_pass_subject
+from models.plot import return_message,picture,judge,return_pass_subject
 import pandas as pd
 app = Flask(__name__)
 
@@ -25,7 +24,7 @@ handler = WebhookHandler(channel_secret)
 
 #讀取成績單及通過標準
 data=pd.read_csv('測試成績單.csv')
-standar={'記憶':80,'理解':70,'應用':60,'分析':60,'評鑑':60,'創意':60}
+standar={'memory':80,'understand':70,'application':60,'analyse':60,'judge':60,'cool':60}
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -74,6 +73,10 @@ def handle_postback(event):
     if event.postback.data == '查詢成績' :
         line_bot_api.reply_message(
             event.reply_token,TextSendMessage("請輸入您的學號")
+        )
+    elif event.postback.data == '重要公告' :
+        line_bot_api.reply_message(
+            event.reply_token,TextSendMessage("目前尚未有公告唷！")
         )
     elif event.postback.data == '課程簡報' :
         line_bot_api.reply_message(
