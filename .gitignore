@@ -136,3 +136,10 @@ dmypy.json
 #成績單檔案
 *.xlsx
 *.csv
+
+#設定檔
+*.conf
+*.dockerignore
+Dockerfile
+cert/
+*.crt
