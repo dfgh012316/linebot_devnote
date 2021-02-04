@@ -51,12 +51,16 @@ def return_message(data,input_data):
     if len(search_ID_DICT(data,input_data)['ID']) == 0 :
         return 
     else :
-        content='知識:'+str(search_ID_DICT(data,input_data)['知識_40%']).replace('[','').replace(']','')+'\n'+\
-                '能力:'+str(search_ID_DICT(data,input_data)['能力_40%']).replace('[','').replace(']','')+'\n'+\
-                '態度:'+str(search_ID_DICT(data,input_data)['態度_20%']).replace('[','').replace(']','')
+        content='知識:'+str(search_ID_DICT(data,input_data)['知識_40%'])+"--排名"+str(search_ID_DICT(data,input_data)['知識排名'])+'\n'+\
+                '能力:'+str(search_ID_DICT(data,input_data)['能力_40%'])+"--排名"+str(search_ID_DICT(data,input_data)['能力排名'])+'\n'+\
+                '態度:'+str(search_ID_DICT(data,input_data)['態度_20%'])+"--排名"+str(search_ID_DICT(data,input_data)['態度排名'])+'\n'+\
+                "----------------"+'\n'+\
+                '總排名:'+str(search_ID_DICT(data,input_data)['總排名'])+'\n'+\
+                '總人數:'+str(search_ID_DICT(data,input_data)['人數'])
+
                
 
-        return content
+        return content.replace('[','').replace(']','').replace(".0","")+""
 
 
 def picture(standar,data,ID):
@@ -102,9 +106,11 @@ if __name__ == '__main__':
     plt.rcParams['font.sans-serif'] = ['Taipei Sans TC Beta'] #顯示中文字
     data=create_data()
     standar={'知識_40%':80,'能力_40%':70,'態度_20%':60}
-    print(len(search_ID_DICT(data,'b0924017')['ID'])==0)
-    print(picture(standar,data,'b0924017'))
-    print(return_message(data,'b0924017'))
+    
+    print(search_ID_DICT(data,'B0642024')['總排名'])
+    
+    print(picture(standar,data,'B0642024'))
+    print(return_message(data,'B0642024'))
 
 
 
