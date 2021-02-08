@@ -1,3 +1,10 @@
+# #!/usr/bin/python # 
+# # -*- coding: UTF-8 -*-
+
+# print('Content-type: text/html\n\n')
+
+
+
 from flask import Flask, request, abort,render_template
 import matplotlib.pyplot as plt
 import os,sys,sqlite3,json
@@ -30,6 +37,7 @@ plt.rcParams['font.sans-serif'] = ['Taipei Sans TC Beta'] #顯示中文字
 data=create_data()
 standar={'知識_40%':80,'能力_40%':70,'態度_20%':60}
 
+#機器人
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -54,7 +62,7 @@ def handle_message(event):
     try :
         reply_arr=[]                           #回覆的訊息list
         input_data=event.message.text.upper()  #大小寫都可搜尋
-        if len(search_ID_DICT(data,input_data)['ID']) != 0 :
+        if len(search_ID_DICT(data,input_data)['ID']) != 0 :  #判斷是否有該學號
             content=return_message(data,input_data) #回覆成績資料
             grade_picture=picture(standar,data,input_data)  #生成圖表及回傳URL
             pass_subject=judge(standar,data,input_data)  #產生通過的科目List
@@ -105,9 +113,6 @@ def handle_postback(event):
         line_bot_api.reply_message(
             event.reply_token,TextSendMessage("https://drive.google.com/drive/folders/1P6ulxiTASSq-h7VvwuisO-CPizDr_0za?usp=sharing")
         )
-
-
- 
 
 if __name__ == "__main__":  
     app.run(port=1234)

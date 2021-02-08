@@ -69,27 +69,51 @@ def picture(standar,data,ID):
     else :
         df=data.loc[data['ID']==ID].fillna(0)            #處理尚未填入成績的空欄位
         grade=[int(df[i]) for i in df.columns[2:5]]      #成績  
-        subject=[i for i in df.columns[2:5]]             #科目
+        grade2=[int(df[i]) for i in df.columns[11:14]]
+        subject=[i for i in df.columns[2:5]]
+        x=np.arange(len(subject)) #取得科目數量
+        print(grade2)
+        width=0.35
+        fig,ax=plt.subplots()
+        rects1 = ax.bar(x +width/2, grade, width,color='#84C1FF')
+        rects2 = ax.bar(x - width/2, grade2, width,color='#BE77FF')
+
+        ax.set_ylabel('成績')
+        ax.set_title('三大領域')
+        ax.set_xticks(x)
+        ax.set_xticklabels(subject)
+        def autolabel(rects):
+    
+            for rect in rects:
+                height = rect.get_height()
+                ax.annotate('{}'.format(height),
+                    xy=(rect.get_x() + rect.get_width() / 2, height),
+                    xytext=(0, 3),  # 3 points vertical offset
+                    textcoords="offset points",
+                    ha='center', va='bottom')
+        autolabel(rects1)
+        autolabel(rects2)
+
+        fig.tight_layout()
+
         pass_list=plot_judge(standar,data,ID)
         subject,flag=zip(*pass_list)
-        x=np.arange(len(subject))                       #取得科目數量
-        bars=plt.bar(x,grade,tick_label=subject,color='blue')  
-    
-    
-        for a,b in zip([i for i in range(6)],df.columns[2:5]):
-            plt.text(a,int(df[b]),int(df[b]),size=18,horizontalalignment='center')
+                            
+        # bars=plt.bar(x,grade,tick_label=subject,color='blue')  
+        # for a,b in zip([i for i in range(6)],df.columns[2:5]):
+        #     plt.text(a,int(df[b]),int(df[b]),size=18,horizontalalignment='center')
 
-        for i, bar in enumerate(bars): 
+        for i, bar in enumerate(rects1): 
             if flag[i] == 0 : 
-                bar.set_color("red")
+                bar.set_color("#FF7575")
 
-        plt.xlabel('三大領域')
-        plt.ylabel('成績')
-        plt.title(ID)
-        plt.ylim(0,100)
-        plt.savefig('static//{}.png'.format(ID))
+        # plt.xlabel('三大領域')
+        # plt.ylabel('成績')
+        # plt.title(ID)
+        # plt.ylim(0,100)
+        fig.savefig('static//{}.png'.format(ID))
         plt.close()
-        return 'https://601dbe51ee90.ngrok.io//static//{}.png'.format(ID)  #mac上改用 /  win上用//
+        return 'https://c9519558edbb.ngrok.io//static//{}.png'.format(ID)  #mac上改用 /  win上用//
 
 def return_pass_subject(pass_subject):
     content="恭喜"
@@ -107,7 +131,6 @@ if __name__ == '__main__':
     data=create_data()
     standar={'知識_40%':80,'能力_40%':70,'態度_20%':60}
     
-    print(search_ID_DICT(data,'B0642024')['總排名'])
     
     print(picture(standar,data,'B0642024'))
     print(return_message(data,'B0642024'))
