@@ -1,10 +1,3 @@
-# #!/usr/bin/python # 
-# # -*- coding: UTF-8 -*-
-
-# print('Content-type: text/html\n\n')
-
-
-
 from flask import Flask, request, abort,render_template
 import matplotlib.pyplot as plt
 import os,sys,sqlite3,json
