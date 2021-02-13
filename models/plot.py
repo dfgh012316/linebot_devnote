@@ -78,12 +78,13 @@ def picture(standar,data,ID):
         ax.set_title(ID)
         ax.set_xticks(x)
         ax.set_xticklabels(subject) 
+        ax.set_ylim([0,115])
         def autolabel(rects):
     
             for rect in rects:
                 height = rect.get_height()
                 ax.annotate('{}'.format(height),
-                    xy=(rect.get_x() + rect.get_width() / 2, height-3),
+                    xy=(rect.get_x() + rect.get_width() / 2, height),
                     xytext=(0, 3),  # 3 points vertical offset
                     textcoords="offset points",
                     ha='center', va='bottom',
