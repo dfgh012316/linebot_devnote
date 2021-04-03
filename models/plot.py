@@ -1,6 +1,143 @@
 import matplotlib.pyplot as plt
 import pandas as  pd
 import numpy as np
+from linebot.models import FlexSendMessage
+def flex_grade(data,input_data,url):
+    bubble=FlexSendMessage(
+        alt_text="你的成績",
+        contents=
+            {
+              "type": "bubble",
+              "size": "mega",
+              "direction": "ltr",
+              "hero": {
+                 "type": "image",
+                 "url": url,
+                 "size": "full",
+                 "aspectMode": "fit",
+                 "action": {
+                 "type": "uri",
+                 "label": "action",
+                 "uri": url
+            }
+            },
+            "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+             {
+              "type": "text",
+              "text": "成績",
+              "weight": "bold",
+              "size": "xl"
+            },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "lg",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "知識",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": str(search_ID_DICT(data,input_data)['知識_40%']).replace('[','').replace(']','').replace(".0",""),
+                "wrap": True,
+                "color": "#666666",
+                "size": "sm",
+                "flex": 1
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "text",
+                "text": "能力",
+                "color": "#aaaaaa",
+                "size": "sm",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": str(search_ID_DICT(data,input_data)['能力_40%']).replace('[','').replace(']','').replace(".0",""),
+                "wrap": True,
+                "color": "#666666",
+                "size": "sm",
+                "flex": 1
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "態度",
+                "size": "sm",
+                "color": "#aaaaaa",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": str(search_ID_DICT(data,input_data)['態度_20%']).replace('[','').replace(']','').replace(".0",""),
+                "flex": 5,
+                "wrap": True,
+                "size": "sm",
+                "flex": 1
+              }
+            ],
+            "spacing": "sm"
+          }
+        ]
+      },
+      {
+        "type": "separator",
+        "color": "#aaaaaa",
+        "margin": "xxl"
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "baseline",
+    "contents": [
+      {
+        "type": "text",
+        "text": "總排名",
+        "size": "md"
+      },
+      {
+        "type": "text",
+        "text": str(search_ID_DICT(data,input_data)['總排名']).replace('[','').replace(']','').replace(".0",""),
+        "margin": "none",
+        "size": "sm",
+        "color": "#aaaaaa"
+      }
+    ]
+  },
+  "styles": {
+    "header": {
+      "separator": True
+    }
+  }
+}
+    )
+    return bubble
 
 def create_data():
     df = pd.DataFrame()
@@ -45,20 +182,6 @@ def plot_judge(standar,data,ID):
 
     return pass_list
 
-def return_message(data,input_data):
-    if len(search_ID_DICT(data,input_data)['ID']) == 0 :
-        return 
-    else :
-        content='知識:'+str(search_ID_DICT(data,input_data)['知識_40%'])+"--排名"+str(search_ID_DICT(data,input_data)['知識排名'])+'\n'+\
-                '能力:'+str(search_ID_DICT(data,input_data)['能力_40%'])+"--排名"+str(search_ID_DICT(data,input_data)['能力排名'])+'\n'+\
-                '態度:'+str(search_ID_DICT(data,input_data)['態度_20%'])+"--排名"+str(search_ID_DICT(data,input_data)['態度排名'])+'\n'+\
-                "----------------"+'\n'+\
-                '總排名:'+str(search_ID_DICT(data,input_data)['總排名'])+'\n'+\
-                '總人數:'+str(search_ID_DICT(data,input_data)['人數'])
-
-        return content.replace('[','').replace(']','').replace(".0","")+""
-
-
 def picture(standar,data,ID):
     if len(search_ID_DICT(data,ID)['ID']) == 0 :
         return "查無此學號，請重新輸入。"
@@ -99,11 +222,11 @@ def picture(standar,data,ID):
 
         for i, bar in enumerate(rects1): 
             if flag[i] == 0 : 
-                bar.set_color("#FF7575")      #不及格的成績
+                bar.set_color("#FF7575")      #不及格的顏色
 
         fig.savefig('static//{}.png'.format(ID))
         plt.close()
-        return 'https://902e8626c1ba.ngrok.io//static//{}.png'.format(ID)  #mac上改用 /  win上用//
+        return 'https://0d88cd745e28.ngrok.io//static//{}.png'.format(ID)  
 
 def return_pass_subject(pass_subject):
     content="恭喜"
@@ -121,7 +244,7 @@ if __name__ == '__main__':
     standar={'知識_40%':80,'能力_40%':70,'態度_20%':60}
     
     print(picture(standar,data,'B0924031'))
-    print(return_message(data,'B0924031'))
+    print(flex_grade(data,'B0924031',picture(standar,data,'B0924031')))
 
 
 

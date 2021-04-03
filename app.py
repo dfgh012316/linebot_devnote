@@ -3,17 +3,14 @@ import matplotlib.pyplot as plt
 import os,sys,sqlite3,json
 from dotenv import load_dotenv
 from linebot import (
-    LineBotApi, WebhookHandler
-)
+    LineBotApi, WebhookHandler)
 from linebot.exceptions import (
-    InvalidSignatureError
-)
+    InvalidSignatureError)
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent,
-    TemplateSendMessage,ButtonsTemplate,MessageTemplateAction,FlexSendMessage
-)
-from models.plot import return_message,picture,judge,return_pass_subject,create_data,search_ID_DICT
+    MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent,)
+from models.plot import picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
 import pandas as pd
+
 app = Flask(__name__)
 
 #Enviroment Setting
@@ -55,15 +52,13 @@ def handle_message(event):
     try :
         reply_arr=[]                           #回覆的訊息list
         input_data=event.message.text.upper()  #大小寫都可搜尋
-        if len(search_ID_DICT(data,input_data)['ID']) != 0 :  #判斷是否有該學號
-            content=return_message(data,input_data) #回覆成績資料
-            grade_picture=picture(standar,data,input_data)  #生成圖表及回傳URL
-            pass_subject=judge(standar,data,input_data)  #產生通過的科目List
-            content2=return_pass_subject(pass_subject)
-            reply_arr.append(TextSendMessage(content))  #將文字訊系放入reply陣列
-            reply_arr.append(ImageSendMessage(grade_picture,grade_picture)) #將圖表url放入回傳陣列
+        if len(search_ID_DICT(data,input_data)['ID']) != 0 :  #判斷該學號是否存在
+            grade_picture=picture(standar,data,input_data)     #生成圖表及回傳URL
+            pass_subject=judge(standar,data,input_data)         #產生通過的科目List
+            reply_arr.append(flex_grade(data,input_data,grade_picture))  #回覆成績資料
             if pass_subject :
-                reply_arr.append(TextSendMessage(content2))
+                content=return_pass_subject(pass_subject)
+                reply_arr.append(TextSendMessage(content))
                 reply_arr.append(StickerSendMessage(
                     package_id='11537',
                     sticker_id='52002735')
