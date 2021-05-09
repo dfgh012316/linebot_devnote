@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/jerry/opt/anaconda3/envs/linebot/bin/python"
+    "python.pythonPath": "/Users/jerry/opt/anaconda3/envs/linebot/bin/python",
+    "python.linting.flake8Args": ["--max-line-length=140" ]
 }
