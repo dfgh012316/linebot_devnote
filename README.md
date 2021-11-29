@@ -1,5 +1,7 @@
 # LineBot開發
 
+# 本專案目前已經沒有在維護
+
 # Demo
 
 ![BotQR.png](BotQR.png)
