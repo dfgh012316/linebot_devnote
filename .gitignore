@@ -143,3 +143,5 @@ dmypy.json
 Dockerfile
 cert/
 *.crt
+*.json
+*.env
