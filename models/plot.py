@@ -3,40 +3,43 @@ import pandas as  pd
 import numpy as np
 from linebot.models import FlexSendMessage
 
-
-def flex_grade(data, input_data, url):
+def flex_grade(url, values):
     bubble = FlexSendMessage(
-        alt_text="你的成績",
-        contents={
-              "type": "bubble",
-              "size": "mega",
-              "direction": "ltr",
-              "hero": {
-                  "type": "image",
-                  "url": url,
-                  "size": "full",
-                  "aspectMode": "fit",
-                  "action": {
-                    "type": "uri",
-                    "label": "action",
-                    "uri": url
-                  }
-                },
-              "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-              {
-                "type": "text",
-                "text": "成績",
-                "weight": "bold",
-                "size": "xl"
-              },
+      alt_text = "你的成績",
+      contents =
+      {
+  "type": "bubble",
+  "hero": {
+    "type": "image",
+    "url": url,
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "cover",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com/"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "contents": [
+      {
+        "type": "text",
+        "text": "成績",
+        "size": "3xl",
+        "align": "center",
+        "gravity": "center",
+        "wrap": True,
+        "contents": []
+      },
       {
         "type": "box",
         "layout": "vertical",
-        "margin": "lg",
         "spacing": "sm",
+        "margin": "lg",
         "contents": [
           {
             "type": "box",
@@ -46,17 +49,19 @@ def flex_grade(data, input_data, url):
               {
                 "type": "text",
                 "text": "知識",
-                #"color": "#aaaaaa",
-                "size": "sm",
-                "flex": 1
+                "size": "xl",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": []
               },
               {
                 "type": "text",
-                "text": str(search_ID_DICT(data, input_data)['知識_40%']).replace('[', '').replace(']', '').replace(".0", ""),
+                "text": str(values[0]),
+                "size": "xl",
+                "color": "#666666",
+                "flex": 4,
                 "wrap": True,
-                #"color": "#666666",
-                "size": "sm",
-                "flex": 1
+                "contents": []
               }
             ]
           },
@@ -68,352 +73,182 @@ def flex_grade(data, input_data, url):
               {
                 "type": "text",
                 "text": "能力",
-                #"color": "#aaaaaa",
-                "size": "sm",
-                "flex": 1
+                "size": "xl",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": []
               },
               {
                 "type": "text",
-                "text": str(search_ID_DICT(data,input_data)['能力_40%']).replace('[','').replace(']','').replace(".0",""),
+                "text": str(values[1]),
+                "size": "xl",
+                "color": "#666666",
+                "flex": 4,
                 "wrap": True,
-                #"color": "#666666",
-                "size": "sm",
-                "flex": 1
+                "contents": []
               }
             ]
           },
           {
             "type": "box",
             "layout": "baseline",
+            "spacing": "sm",
             "contents": [
               {
                 "type": "text",
                 "text": "態度",
-                "size": "sm",
-                #"color": "#aaaaaa",
-                "flex": 1
+                "size": "xl",
+                "color": "#AAAAAA",
+                "flex": 1,
+                "contents": []
               },
               {
                 "type": "text",
-                "text": str(search_ID_DICT(data, input_data)['態度_20%']).replace('[', '').replace(']', '').replace(".0", ""),
-                "flex": 5,
+                "text": str(values[2]),
+                "size": "xl",
+                "color": "#666666",
+                "flex": 4,
                 "wrap": True,
-                "size": "sm",
-                "flex": 1
-              }
-            ],
-            "spacing": "sm"
-          }
-        ]
-      },
-      {
-        "type": "separator",
-        #"color": "#aaaaaa",
-        "margin": "xxl"
-      }
-    ]
-  },
-  "footer": {
-    "type": "box",
-    "layout": "baseline",
-    "contents": [
-      {
-        "type": "text",
-        "text": "總排名",
-        "size": "md"
-      },
-      {
-        "type": "text",
-        "text": str(search_ID_DICT(data,input_data)['總排名']).replace('[','').replace(']','').replace(".0",""),
-        "margin": "none",
-        "size": "sm",
-        #"color": "#aaaaaa"
-      }
-    ]
-  },
-  "styles": {
-    "header": {
-      "separator": True
-    }
-  }
-}
-    )
-    return bubble
-  
-
-def flex_grade1(url):
-    bubble=FlexSendMessage(
-      alt_text="你的成績",
-      contents=
-      {
-      "type": "bubble",
-      "hero": {
-        "type": "image",
-        "url": 'https://aec1-2401-e180-8883-2fc0-8181-800e-eee4-1a82.ngrok.io//static//B0742024.png',
-        "size": "full",
-        "aspectRatio": "20:13",
-        "aspectMode": "cover",
-        "action": {
-          "type": "uri",
-          "uri": "http://linecorp.com/"
-        }
-      },
-      "body": {
-        "type": "box",
-        "layout": "vertical",
-        "spacing": "md",
-        "contents": [
-          {
-            "type": "text",
-            "text": "BROWN'S ADVENTURE\nIN MOVIE",
-            "wrap": True,
-            "weight": "bold",
-            "gravity": "center",
-            "size": "xl"
-          },
-          {
-            "type": "box",
-            "layout": "vertical",
-            "margin": "lg",
-            "spacing": "sm",
-            "contents": [
-              {
-                "type": "box",
-                "layout": "baseline",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "Date",
-                    "color": "#aaaaaa",
-                    "size": "sm",
-                    "flex": 1
-                  },
-                  {
-                    "type": "text",
-                    "text": "Monday 25, 9:00PM",
-                    "wrap": True,
-                    "size": "sm",
-                    "color": "#666666",
-                    "flex": 4
-                  }
-                ]
-              },
-              {
-                "type": "box",
-                "layout": "baseline",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "Place",
-                    "color": "#aaaaaa",
-                    "size": "sm",
-                    "flex": 1
-                  },
-                  {
-                    "type": "text",
-                    "text": "7 Floor, No.3",
-                    "wrap": True,
-                    "color": "#666666",
-                    "size": "sm",
-                    "flex": 4
-                  }
-                ]
-              },
-              {
-                "type": "box",
-                "layout": "baseline",
-                "spacing": "sm",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "Seats",
-                    "color": "#aaaaaa",
-                    "size": "sm",
-                    "flex": 1
-                  },
-                  {
-                    "type": "text",
-                    "text": "C Row, 18 Seat",
-                    "wrap": True,
-                    "color": "#666666",
-                    "size": "sm",
-                    "flex": 4
-                  }
-                ]
+                "contents": []
               }
             ]
           }
         ]
       }
-    }
+    ]
+  }
+}
     )
     return bubble
 
 
 
 def flex_simple():
-  bubble=FlexSendMessage(
-    alt_text="你的成績",
-      contents={
+  flex_message = FlexSendMessage(
+            alt_text="stock_name",
+            contents=
+            {
   "type": "bubble",
   "hero": {
     "type": "image",
-    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_2_restaurant.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "cover",
     "action": {
       "type": "uri",
-      "label": "Line",
-      "uri": "https://linecorp.com/"
+      "label": "Action",
+      "uri": "https://linecorp.com"
     }
   },
   "body": {
     "type": "box",
     "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
     "contents": [
       {
         "type": "text",
-        "text": "Brown Cafe",
+        "text": "Brown's Burger",
         "weight": "bold",
         "size": "xl",
         "contents": []
       },
       {
         "type": "box",
-        "layout": "baseline",
-        "margin": "md",
+        "layout": "vertical",
+        "spacing": "sm",
         "contents": [
           {
-            "type": "icon",
-            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png",
-            "size": "sm"
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "icon",
+                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/restaurant_regular_32.png"
+              },
+              {
+                "type": "text",
+                "text": "$10.5",
+                "weight": "bold",
+                "margin": "sm",
+                "contents": []
+              },
+              {
+                "type": "text",
+                "text": "400kcl",
+                "size": "sm",
+                "color": "#AAAAAA",
+                "align": "end",
+                "contents": []
+              }
+            ]
           },
           {
-            "type": "icon",
-            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png",
-            "size": "sm"
-          },
-          {
-            "type": "icon",
-            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png",
-            "size": "sm"
-          },
-          {
-            "type": "icon",
-            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png",
-            "size": "sm"
-          },
-          {
-            "type": "icon",
-            "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png",
-            "size": "sm"
-          },
-          {
-            "type": "text",
-            "text": "4.0",
-            "size": "sm",
-            "color": "#999999",
-            "flex": 0,
-            "margin": "md",
-            "contents": []
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "icon",
+                "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/restaurant_large_32.png"
+              },
+              {
+                "type": "text",
+                "text": "$15.5",
+                "weight": "bold",
+                "flex": 0,
+                "margin": "sm",
+                "contents": []
+              },
+              {
+                "type": "text",
+                "text": "550kcl",
+                "size": "sm",
+                "color": "#AAAAAA",
+                "align": "end",
+                "contents": []
+              }
+            ]
           }
         ]
       },
       {
-        "type": "box",
-        "layout": "vertical",
-        "spacing": "sm",
-        "margin": "lg",
-        "contents": [
-          {
-            "type": "box",
-            "layout": "baseline",
-            "spacing": "sm",
-            "contents": [
-              {
-                "type": "text",
-                "text": "Place",
-                "size": "sm",
-                "color": "#AAAAAA",
-                "flex": 1,
-                "contents": []
-              },
-              {
-                "type": "text",
-                "text": "Miraina Tower, 4-1-6 Shinjuku, Tokyo",
-                "size": "sm",
-                "color": "#666666",
-                "flex": 5,
-                "wrap": true,
-                "contents": []
-              }
-            ]
-          },
-          {
-            "type": "box",
-            "layout": "baseline",
-            "spacing": "sm",
-            "contents": [
-              {
-                "type": "text",
-                "text": "Time",
-                "size": "sm",
-                "color": "#AAAAAA",
-                "flex": 1,
-                "contents": []
-              },
-              {
-                "type": "text",
-                "text": "10:00 - 23:00",
-                "size": "sm",
-                "color": "#666666",
-                "flex": 5,
-                "wrap": true,
-                "contents": []
-              }
-            ]
-          }
-        ]
+        "type": "text",
+        "text": "Sauce, Onions, Pickles, Lettuce & Cheese",
+        "size": "xxs",
+        "color": "#AAAAAA",
+        "wrap": True,
+        "contents": []
       }
     ]
   },
   "footer": {
     "type": "box",
     "layout": "vertical",
-    "flex": 0,
-    "spacing": "sm",
     "contents": [
       {
-        "type": "button",
-        "action": {
-          "type": "uri",
-          "label": "CALL",
-          "uri": "https://linecorp.com"
-        },
-        "height": "sm",
-        "style": "link"
-      },
-      {
-        "type": "button",
-        "action": {
-          "type": "uri",
-          "label": "WEBSITE",
-          "uri": "https://linecorp.com"
-        },
-        "height": "sm",
-        "style": "link"
-      },
-      {
         "type": "spacer",
-        "size": "sm"
+        "size": "xxl"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "Add to Cart",
+          "uri": "https://linecorp.com"
+        },
+        "color": "#905C44",
+        "style": "primary"
       }
     ]
   }
 }
-  )
+        )
+  return flex_message
 
 
 

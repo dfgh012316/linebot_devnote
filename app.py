@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent)
-from models.plot import flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade,flex_grade1
+from models.plot import flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
 import pandas as pd
 import re
 from google.oauth2.service_account import Credentials
@@ -15,8 +15,8 @@ app = Flask(__name__)
 
 #Enviroment Setting
 load_dotenv()
-channel_secret=os.getenv('LINE_CHANNEL_SECRET')
-channel_access_token=os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
+channel_secret = os.getenv('LINE_CHANNEL_SECRET')
+channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
@@ -24,10 +24,15 @@ plt.switch_backend('agg') #不需要圖形介面的的backend
 plt.rcParams['font.sans-serif'] = ['Taipei Sans TC Beta'] #顯示中文字
 
 #讀取成績單及通過標準
-data=create_data()
+data = create_data()
 #print(data['ID'])   #test by QQ
 #print(data)
-standar={'知識_40%':80,'能力_40%':70,'態度_20%':60}
+standar = {'知識_40%':80,'能力_40%':70,'態度_20%':60}
+
+#讀取google sheets
+scope = ['https://www.googleapis.com/auth/spreadsheets'] #移出來讀一次就好，太耗效能
+creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
+sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
 
 #機器人
 @app.route("/callback", methods=['POST'])
@@ -53,50 +58,47 @@ def callback():
 def handle_message(event):
     
     #test by qq
-
-    scope = ['https://www.googleapis.com/auth/spreadsheets'] #移出來讀一次就好，太耗效能
-    creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
-    sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
-    input_data=event.message.text.upper()
+    
+    input_data = event.message.text.upper()
 
     try :
         '''
         worksheet = sheet.get_worksheet(0)  
         data = pd.DataFrame(worksheet.get_all_values())
-        data_filler = data.iloc[4:,:]
+        data_filter = data.iloc[4:,:]
         '''
         
         worksheet = sheet.get_worksheet(0)  
         data = pd.DataFrame(worksheet.get_all_values())
-        data_filler = data.iloc[4:,:]
+        data_filter = data.iloc[4:,:]
 
         worksheet1 = sheet.get_worksheet(1)  
         data1 = pd.DataFrame(worksheet1.get_all_values())
-        data_filler1 = data1.iloc[4:,:]
+        data_filter1 = data1.iloc[4:,:]
 
         worksheet2 = sheet.get_worksheet(2)  
         data2 = pd.DataFrame(worksheet2.get_all_values())
-        data_filler2 = data2.iloc[4:,:]
+        data_filter2 = data2.iloc[4:,:]
 
         worksheet3 = sheet.get_worksheet(3)  
         data3 = pd.DataFrame(worksheet3.get_all_values())
-        data_filler3 = data3.iloc[4:,:]
+        data_filter3 = data3.iloc[4:,:]
 
         worksheet4 = sheet.get_worksheet(4)  
         data4 = pd.DataFrame(worksheet4.get_all_values())
-        data_filler4 = data4.iloc[4:,:]
+        data_filter4 = data4.iloc[4:,:]
 
-        aaa=pd.concat([data_filler,data_filler1,data_filler2,data_filler3,data_filler4])
+        filtered_data = pd.concat([data_filter, data_filter1, data_filter2, data_filter3, data_filter4])
         
         
-        #row=data_filler.loc[data_filler.iloc[:,2]==input_data]
-        row=aaa.loc[aaa.iloc[:,2]==input_data]
+        #row=data_filter.loc[data_filter.iloc[:,2]==input_data]
+        row = filtered_data.loc[filtered_data.iloc[:,2] == input_data]
         print(row)
-        data_dict=row.to_dict('list')
+        data_dict = row.to_dict('list')
         print(data_dict)
         if len(data_dict[2]) != 0 :
-            name=row.iloc[0,3]
-            stu_id=row.iloc[0,2]
+            name = row.iloc[0,3]
+            stu_id = row.iloc[0,2]
             print(name)
             knowledge_subtotal = row.iloc[0,20]
             CoreValues_subtotal = row.iloc[0,33]
@@ -108,18 +110,18 @@ def handle_message(event):
             values = [float(knowledge_subtotal),float(CoreValues_subtotal),float(attitude_subtotal)]
             x_labels = ['知識應用','核心能力','學習態度']
  
-            plt.bar(x_labels,values,color=['black','blue','red'])
+            plt.bar(x_labels,values,color = ['black','blue','red'])
 
             plt.title(stu_id)
-            plt.savefig("static//"+ str(stu_id) +".jpg")
+            plt.savefig("static//"+ str(stu_id) +".png")
             plt.close()
-            url = 'https://aec1-2401-e180-8883-2fc0-8181-800e-eee4-1a82.ngrok.io//static//'+str(stu_id)+'.png'
+            url = 'https://aec1-2401-e180-8883-2fc0-8181-800e-eee4-1a82.ngrok.io//static//'+ str(stu_id) +'.png'
             print(url)
-            #reply_arr.append(flex_grade1(url))
-            aaaa = flex_grade1(url)
+            #reply_arr.append(flex_grade(url))
+            report_card = flex_grade(url, values)
             #print("-------------------------------------------------------------")
-            #print(aaaa)
-            line_bot_api.reply_message(event.reply_token, aaaa)
+            #print(report_card)
+            line_bot_api.reply_message(event.reply_token, report_card)
             #line_bot_api.reply_message(event.reply_token, TextSendMessage('Hello'))
         
         
