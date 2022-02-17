@@ -145,3 +145,5 @@ cert/
 *.crt
 *.json
 *.env
+*.ipynb
+ngrok.exe

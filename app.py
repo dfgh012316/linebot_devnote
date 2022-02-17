@@ -5,11 +5,14 @@ from dotenv import load_dotenv
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent)
-from models.plot import flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
+from models.plot import flex_choose, flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
 import pandas as pd
 import re
 from google.oauth2.service_account import Credentials
 import gspread
+
+import time
+
 
 app = Flask(__name__)
 
@@ -21,18 +24,44 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 plt.switch_backend('agg') #不需要圖形介面的的backend
-plt.rcParams['font.sans-serif'] = ['Taipei Sans TC Beta'] #顯示中文字
+plt.rcParams['font.sans-serif'] = ['TaipeiSansTCBeta-Regular'] #顯示中文字
 
 #讀取成績單及通過標準
 data = create_data()
 #print(data['ID'])   #test by QQ
 #print(data)
-standar = {'知識_40%':80,'能力_40%':70,'態度_20%':60}
+standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
+
+
 
 #讀取google sheets
-scope = ['https://www.googleapis.com/auth/spreadsheets'] #移出來讀一次就好，太耗效能
+scope = ['https://www.googleapis.com/auth/spreadsheets'] #移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
 creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
 sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
+
+worksheet = sheet.get_worksheet(0)  
+data = pd.DataFrame(worksheet.get_all_values())
+data_filter = data.iloc[4:,:]
+
+worksheet1 = sheet.get_worksheet(1)  
+data1 = pd.DataFrame(worksheet1.get_all_values())
+data_filter1 = data1.iloc[4:,:]
+
+worksheet2 = sheet.get_worksheet(2)  
+data2 = pd.DataFrame(worksheet2.get_all_values())
+data_filter2 = data2.iloc[4:,:]
+
+worksheet3 = sheet.get_worksheet(3)  
+data3 = pd.DataFrame(worksheet3.get_all_values())
+data_filter3 = data3.iloc[4:,:]
+
+worksheet4 = sheet.get_worksheet(4)  
+data4 = pd.DataFrame(worksheet4.get_all_values()) 
+data_filter4 = data4.iloc[4:,:]
+
+filtered_data = pd.concat([data_filter, data_filter1, data_filter2, data_filter3, data_filter4]).fillna(0)
+filtered_data = filtered_data.replace('',0)
+print('looooooooooooooook!!!!!!!!!!!\n'+str(filtered_data)+'\n')
 
 #機器人
 @app.route("/callback", methods=['POST'])
@@ -54,10 +83,11 @@ def callback():
     return 'OK'
 
 
+
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    
-    #test by qq
+
+    start = time.time() #計算運行時間
     
     input_data = event.message.text.upper()
 
@@ -67,60 +97,36 @@ def handle_message(event):
         data = pd.DataFrame(worksheet.get_all_values())
         data_filter = data.iloc[4:,:]
         '''
-        
-        worksheet = sheet.get_worksheet(0)  
-        data = pd.DataFrame(worksheet.get_all_values())
-        data_filter = data.iloc[4:,:]
-
-        worksheet1 = sheet.get_worksheet(1)  
-        data1 = pd.DataFrame(worksheet1.get_all_values())
-        data_filter1 = data1.iloc[4:,:]
-
-        worksheet2 = sheet.get_worksheet(2)  
-        data2 = pd.DataFrame(worksheet2.get_all_values())
-        data_filter2 = data2.iloc[4:,:]
-
-        worksheet3 = sheet.get_worksheet(3)  
-        data3 = pd.DataFrame(worksheet3.get_all_values())
-        data_filter3 = data3.iloc[4:,:]
-
-        worksheet4 = sheet.get_worksheet(4)  
-        data4 = pd.DataFrame(worksheet4.get_all_values())
-        data_filter4 = data4.iloc[4:,:]
-
-        filtered_data = pd.concat([data_filter, data_filter1, data_filter2, data_filter3, data_filter4])
+        #這裡移出來讀一次就好
         
         
         #row=data_filter.loc[data_filter.iloc[:,2]==input_data]
         row = filtered_data.loc[filtered_data.iloc[:,2] == input_data]
-        print(row)
+        #print(row)
         data_dict = row.to_dict('list')
-        print(data_dict)
+        #print(data_dict)
         if len(data_dict[2]) != 0 :
             name = row.iloc[0,3]
             stu_id = row.iloc[0,2]
             print(name)
             knowledge_subtotal = row.iloc[0,20]
-            CoreValues_subtotal = row.iloc[0,33]
-            attitude_subtotal = row.iloc[0,35]
-            
-            total=row.iloc[0].iat[34]
+            CoreValues_subtotal = row.iloc[0,29]
+            attitude_subtotal = row.iloc[0,33]
+            picture(standar, filtered_data, stu_id)
+            print(filtered_data)
+            #total=row.iloc[0].iat[34]
             #line_bot_api.reply_message(event.reply_token,TextSendMessage(str(name) +'您好，知識應用：' + str(knowledge_subtotal) + '分，核心能力：' + str(CoreValues_subtotal) + '分，學習態度：' + str(attitude_subtotal) + '分，總分：' + str(total)))
         
-            values = [float(knowledge_subtotal),float(CoreValues_subtotal),float(attitude_subtotal)]
-            x_labels = ['知識應用','核心能力','學習態度']
- 
-            plt.bar(x_labels,values,color = ['black','blue','red'])
+            values = [float(knowledge_subtotal), float(CoreValues_subtotal), float(attitude_subtotal)]
 
-            plt.title(stu_id)
-            plt.savefig("static//"+ str(stu_id) +".png")
-            plt.close()
-            url = 'https://aec1-2401-e180-8883-2fc0-8181-800e-eee4-1a82.ngrok.io//static//'+ str(stu_id) +'.png'
+            user_id = event.source.user_id
+            print("user_id =", user_id)
+
+            url = 'https://0cb4-61-56-180-227.ngrok.io//static//'+ str(stu_id) +'.png'
             print(url)
-            #reply_arr.append(flex_grade(url))
-            report_card = flex_grade(url, values)
-            #print("-------------------------------------------------------------")
-            #print(report_card)
+            
+            #reply_arr.append(flex_grade(url, values))
+            report_card = flex_grade(url, values)           
             line_bot_api.reply_message(event.reply_token, report_card)
             #line_bot_api.reply_message(event.reply_token, TextSendMessage('Hello'))
         
@@ -140,17 +146,26 @@ def handle_message(event):
             line_bot_api.reply_message(
                 event.reply_token,reply_arr)
         '''
-        if re.search('作業',input_data) :
-            line_bot_api.reply_message(event.reply_token,TextSendMessage('https://euni.niu.edu.tw/'))
+        print("The time used to execute this is given below")
+
+        end = time.time()
+
+        print(end - start)
+
+        #if re.search('作業',input_data) :
+        #    line_bot_api.reply_message(event.reply_token,TextSendMessage('https://euni.niu.edu.tw/'))
         if re.search('查詢成績',input_data):
-            print("nothing")
+            event.reply_token,TextSendMessage("請輸入您的學號")
+        if re.search('作業繳交',input_data):
+            choose_bubble = flex_choose()
+            line_bot_api.reply_message(event.reply_token, choose_bubble)
         else :
             line_bot_api.reply_message(
             event.reply_token,TextSendMessage("查無此學號，請重新輸入。")
         )
     except :
         line_bot_api.reply_message(
-            event.reply_token,TextSendMessage("LineBot怪怪的請聯絡老師或助教")
+            event.reply_token,TextSendMessage("LineBot怪怪的，請聯絡老師或助教")
         )
 
 @handler.add(PostbackEvent)
@@ -181,4 +196,4 @@ def handle_postback(event):
         )
 
 if __name__ == "__main__":  
-    app.run(port=80)
+    app.run(port=8000)
