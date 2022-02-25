@@ -123,7 +123,7 @@ def handle_message(event):
                 account_bubble = flex_account(stu_id, user_id)
                 line_bot_api.reply_message(event.reply_token, account_bubble)
             else:
-                reply_arr.append(TextSendMessage('學號已綁定!'))
+                #reply_arr.append(TextSendMessage('學號已綁定!'))
                 #line_bot_api.reply_message(event.reply_token, TextSendMessage('是否要將學號綁定至Line帳號?'))
             #if(re.search('否',input_data)):
                 #line_bot_api.reply_message(event.reply_token, TextSendMessage('取消綁定，請重新輸入學號。'))
@@ -132,25 +132,31 @@ def handle_message(event):
                 #cursor.execute('INSERT INTO StudentID_UserID VALUES (?, ?)', (stu_id, user_id)) #將UserID和學號做綁定 並記錄在SQLite內
                 #conn.commit()
                 #sqlite3.SQLITE_UPDATE
+                cursor.execute('select * from StudentID_UserID where StudentID = ? AND UserID = ?', [stu_id, user_id]) #執行SQL語法 (判斷輸入學號是否match UserID)
+                conn.commit()
+                result = cursor.fetchone() #紀錄是否存在 用這個判斷
+                print(result)
+                if(result == None):
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage('您輸入的學號已被其他帳號綁定，有任何疑問請詢問助教或老師!'))
+                else:
+                    print(name)
+                    knowledge_subtotal = row.iloc[0,20]
+                    CoreValues_subtotal = row.iloc[0,29]
+                    attitude_subtotal = row.iloc[0,33]
+                    picture(standar, filtered_data, stu_id) #產生圖表
+                    print(filtered_data)
+                
+                    values = [float(knowledge_subtotal), float(CoreValues_subtotal), float(attitude_subtotal)]
 
-                print(name)
-                knowledge_subtotal = row.iloc[0,20]
-                CoreValues_subtotal = row.iloc[0,29]
-                attitude_subtotal = row.iloc[0,33]
-                picture(standar, filtered_data, stu_id) #產生圖表
-                print(filtered_data)
-            
-                values = [float(knowledge_subtotal), float(CoreValues_subtotal), float(attitude_subtotal)]
+                    url = 'https://5708-61-56-180-227.ngrok.io//static//'+ str(stu_id) +'.png'
+                    print(url)
 
-                url = 'https://5708-61-56-180-227.ngrok.io//static//'+ str(stu_id) +'.png'
-                print(url)
-
-                #reply_arr.append(flex_grade(url, values))
-                report_card = flex_grade(url, values)
-                reply_arr.append(report_card)           
-                #line_bot_api.reply_message(event.reply_token, report_card)
-                #line_bot_api.reply_message(event.reply_token, TextSendMessage('Hello'))
-                line_bot_api.reply_message(event.reply_token, reply_arr)
+                    #reply_arr.append(flex_grade(url, values))
+                    report_card = flex_grade(url, values)
+                    reply_arr.append(report_card)           
+                    #line_bot_api.reply_message(event.reply_token, report_card)
+                    #line_bot_api.reply_message(event.reply_token, TextSendMessage('Hello'))
+                    line_bot_api.reply_message(event.reply_token, reply_arr)
         
         '''
         if len(search_ID_DICT(data,input_data)['ID']) != 0 :  #判斷該學號是否存在
