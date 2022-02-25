@@ -263,7 +263,7 @@ def flex_choose():
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": "https://0cb4-61-56-180-227.ngrok.io//static//pog.png",
+    "url": "https://5708-61-56-180-227.ngrok.io//static//pog.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -336,7 +336,7 @@ def flex_choose():
         "action": {
           "type": "uri",
           "label": "3.心理健康a",
-          "uri": flex_simple()
+          "uri": "https://drive.google.com/drive/folders/1HWGrFqMOepC_wxzVT10zgVNxKt-ba1nJ"
         },
         "color": "#905C44",
         "style": "primary"
@@ -367,6 +367,90 @@ def flex_choose():
           "type": "uri",
           "label": "6.社會脈動",
           "uri": "https://drive.google.com/drive/folders/1DWH7-5yA0pJFeVwUHTfOdp41HLJjOhpf"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  return bubble
+
+
+
+def flex_account(stu_id, user_id):
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": "https://5708-61-56-180-227.ngrok.io//static//pog.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "是否確定要綁定此學號?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "確定綁定",
+          "text": " ",
+          "data": 'answer=yes&stu_id='+stu_id+'&user_id='+user_id
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "取消綁定",
+          "text": " ",
+          "data": 'answer=no'
         },
         "color": "#905C44",
         "style": "primary"
@@ -488,7 +572,7 @@ def picture(standar, data, ID):
 
         fig.savefig('static//{}.png'.format(ID))
         plt.close()        
-        return 'https://0cb4-61-56-180-227.ngrok.io//static//{}.png'.format(ID)  
+        return 'https://5708-61-56-180-227.ngrok.io//static//{}.png'.format(ID)  
 
 def return_pass_subject(pass_subject):
     content="恭喜"

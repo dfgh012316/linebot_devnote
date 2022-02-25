@@ -1,11 +1,11 @@
 from flask import Flask, request, abort, render_template
 import matplotlib.pyplot as plt
-import os, sys, sqlite3, json
+import os, sys, sqlite3, json, query_string
 from dotenv import load_dotenv
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent)
-from models.plot import flex_choose, flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
+from models.plot import flex_account, flex_choose, flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
 import pandas as pd
 import re
 from google.oauth2.service_account import Credentials
@@ -27,15 +27,15 @@ plt.switch_backend('agg') #不需要圖形介面的的backend
 plt.rcParams['font.sans-serif'] = ['TaipeiSansTCBeta-Regular'] #顯示中文字
 
 #讀取成績單及通過標準
-data = create_data()
+#data = create_data()
 #print(data['ID'])   #test by QQ
 #print(data)
 standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
 
 
 
-#讀取google sheets
-scope = ['https://www.googleapis.com/auth/spreadsheets'] #移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
+# 讀取google sheets
+scope = ['https://www.googleapis.com/auth/spreadsheets'] # 移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
 creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
 sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
 
@@ -60,8 +60,18 @@ data4 = pd.DataFrame(worksheet4.get_all_values())
 data_filter4 = data4.iloc[4:,:]
 
 filtered_data = pd.concat([data_filter, data_filter1, data_filter2, data_filter3, data_filter4]).fillna(0)
-filtered_data = filtered_data.replace('',0)
+filtered_data = filtered_data.replace('',0) # 成績單上不是數值型態
 print('looooooooooooooook!!!!!!!!!!!\n'+str(filtered_data)+'\n')
+
+
+
+#建立SQLite資料庫
+conn = sqlite3.connect('studentID_userID.db', check_same_thread=False)
+cursor = conn.cursor()
+#cursor.execute('CREATE TABLE StudentID_UserID(StudentID, UserID)')  #建立資料表
+#conn.commit()
+
+
 
 #機器人
 @app.route("/callback", methods=['POST'])
@@ -71,7 +81,6 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    #app.logger.info("Request body: " + body) 會報錯先註解掉
 
     # handle webhook body
     try:
@@ -92,44 +101,56 @@ def handle_message(event):
     input_data = event.message.text.upper()
 
     try :
-        '''
-        worksheet = sheet.get_worksheet(0)  
-        data = pd.DataFrame(worksheet.get_all_values())
-        data_filter = data.iloc[4:,:]
-        '''
-        #這裡移出來讀一次就好
+        #這裡移出來讀一次就好       
         
-        
-        #row=data_filter.loc[data_filter.iloc[:,2]==input_data]
-        row = filtered_data.loc[filtered_data.iloc[:,2] == input_data]
-        #print(row)
+        row = filtered_data.loc[filtered_data.iloc[:,2] == input_data]       
         data_dict = row.to_dict('list')
-        #print(data_dict)
+        
         if len(data_dict[2]) != 0 :
+            user_id = event.source.user_id
+            print("user_id =", user_id)           
             name = row.iloc[0,3]
             stu_id = row.iloc[0,2]
-            print(name)
-            knowledge_subtotal = row.iloc[0,20]
-            CoreValues_subtotal = row.iloc[0,29]
-            attitude_subtotal = row.iloc[0,33]
-            picture(standar, filtered_data, stu_id)
-            print(filtered_data)
-            #total=row.iloc[0].iat[34]
-            #line_bot_api.reply_message(event.reply_token,TextSendMessage(str(name) +'您好，知識應用：' + str(knowledge_subtotal) + '分，核心能力：' + str(CoreValues_subtotal) + '分，學習態度：' + str(attitude_subtotal) + '分，總分：' + str(total)))
-        
-            values = [float(knowledge_subtotal), float(CoreValues_subtotal), float(attitude_subtotal)]
-
-            user_id = event.source.user_id
-            print("user_id =", user_id)
-
-            url = 'https://0cb4-61-56-180-227.ngrok.io//static//'+ str(stu_id) +'.png'
-            print(url)
+            print(type(user_id))
+            reply_arr = []
             
-            #reply_arr.append(flex_grade(url, values))
-            report_card = flex_grade(url, values)           
-            line_bot_api.reply_message(event.reply_token, report_card)
-            #line_bot_api.reply_message(event.reply_token, TextSendMessage('Hello'))
-        
+            cursor.execute('select * from StudentID_UserID where UserID = ?', [user_id]) #執行SQL語法 (判斷UserID是否存在)
+            conn.commit()
+            result = cursor.fetchone() #紀錄是否存在 用這個判斷
+            print(result)
+
+            if(result == None):                
+                account_bubble = flex_account(stu_id, user_id)
+                line_bot_api.reply_message(event.reply_token, account_bubble)
+            else:
+                reply_arr.append(TextSendMessage('學號已綁定!'))
+                #line_bot_api.reply_message(event.reply_token, TextSendMessage('是否要將學號綁定至Line帳號?'))
+            #if(re.search('否',input_data)):
+                #line_bot_api.reply_message(event.reply_token, TextSendMessage('取消綁定，請重新輸入學號。'))
+            #elif(re.search('是',input_data)):                   
+                #reply_arr.append(TextSendMessage('進行綁定中... 綁定完成!'))
+                #cursor.execute('INSERT INTO StudentID_UserID VALUES (?, ?)', (stu_id, user_id)) #將UserID和學號做綁定 並記錄在SQLite內
+                #conn.commit()
+                #sqlite3.SQLITE_UPDATE
+
+                print(name)
+                knowledge_subtotal = row.iloc[0,20]
+                CoreValues_subtotal = row.iloc[0,29]
+                attitude_subtotal = row.iloc[0,33]
+                picture(standar, filtered_data, stu_id) #產生圖表
+                print(filtered_data)
+            
+                values = [float(knowledge_subtotal), float(CoreValues_subtotal), float(attitude_subtotal)]
+
+                url = 'https://5708-61-56-180-227.ngrok.io//static//'+ str(stu_id) +'.png'
+                print(url)
+
+                #reply_arr.append(flex_grade(url, values))
+                report_card = flex_grade(url, values)
+                reply_arr.append(report_card)           
+                #line_bot_api.reply_message(event.reply_token, report_card)
+                #line_bot_api.reply_message(event.reply_token, TextSendMessage('Hello'))
+                line_bot_api.reply_message(event.reply_token, reply_arr)
         
         '''
         if len(search_ID_DICT(data,input_data)['ID']) != 0 :  #判斷該學號是否存在
@@ -159,25 +180,39 @@ def handle_message(event):
         if re.search('作業繳交',input_data):
             choose_bubble = flex_choose()
             line_bot_api.reply_message(event.reply_token, choose_bubble)
-        else :
+        #if re.search('綁定帳號',input_data):
+        #    account_bubble = flex_account()
+        #    line_bot_api.reply_message(event.reply_token, account_bubble)
+        #if re.search('確定綁定',input_data):
+        #    reply_arr.append(TextSendMessage('進行綁定中... 綁定完成!'))
+        #    cursor.execute('INSERT INTO StudentID_UserID VALUES (?, ?)', (stu_id, user_id)) #將UserID和學號做綁定 並記錄在SQLite內
+        #    conn.commit()
+        #    sqlite3.SQLITE_UPDATE
+        else:
             line_bot_api.reply_message(
             event.reply_token,TextSendMessage("查無此學號，請重新輸入。")
         )
-    except :
+    except:
         line_bot_api.reply_message(
             event.reply_token,TextSendMessage("LineBot怪怪的，請聯絡老師或助教")
         )
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    edata = query_string.parse(event.postback.data)
+    print(event.postback.data)
+    print(edata)
     if event.postback.data == '查詢成績' :
         line_bot_api.reply_message(           
             event.reply_token,TextSendMessage("請輸入您的學號")
         )
-    elif event.postback.data == '作業繳交' :
-        line_bot_api.reply_message(
-            event.reply_token,TextSendMessage("https://euni.niu.edu.tw/")
-        )
+    elif edata['answer'] == 'yes' :        
+        cursor.execute('INSERT INTO StudentID_UserID VALUES (?, ?)', (edata['stu_id'], edata['user_id'])) #將UserID和學號做綁定 並記錄在SQLite內
+        conn.commit()
+        sqlite3.SQLITE_UPDATE
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('進行綁定中... 綁定完成!'))
+    elif edata['answer'] == 'no' :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('取消綁定，請重新操作。'))
     elif event.postback.data == '課程簡報' :
         line_bot_api.reply_message(
             event.reply_token,TextSendMessage("https://drive.google.com/drive/folders/1nP_q78_ZGVspPW3FgKP4Uy1HZIz7Exjk?usp=sharing")
