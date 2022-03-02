@@ -1,3 +1,4 @@
+from tkinter import E
 from flask import Flask, request, abort, render_template
 import matplotlib.pyplot as plt
 import os, sys, sqlite3, json, query_string
@@ -22,7 +23,7 @@ channel_secret = os.getenv('LINE_CHANNEL_SECRET')
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
-
+ngrok_url = 'https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io'
 plt.switch_backend('agg') #不需要圖形介面的的backend
 plt.rcParams['font.sans-serif'] = ['TaipeiSansTCBeta-Regular'] #顯示中文字
 
@@ -32,15 +33,16 @@ plt.rcParams['font.sans-serif'] = ['TaipeiSansTCBeta-Regular'] #顯示中文字
 #print(data)
 standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
 
-
-
 # 讀取google sheets
 scope = ['https://www.googleapis.com/auth/spreadsheets'] # 移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
 creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
 sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
+spreadsheet_key_path = '16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ'
+sheet2 = gspread.authorize(creds).open_by_key(spreadsheet_key_path).sheet1
 
 worksheet = sheet.get_worksheet(0)  
 data = pd.DataFrame(worksheet.get_all_values())
+data_header = data.iloc[3]
 data_filter = data.iloc[4:,:]
 
 worksheet1 = sheet.get_worksheet(1)  
@@ -61,9 +63,18 @@ data_filter4 = data4.iloc[4:,:]
 
 filtered_data = pd.concat([data_filter, data_filter1, data_filter2, data_filter3, data_filter4]).fillna(0)
 filtered_data = filtered_data.replace('',0) # 成績單上不是數值型態
-print('looooooooooooooook!!!!!!!!!!!\n'+str(filtered_data)+'\n')
+#print('looooooooooooooook!!!!!!!!!!!\n'+str(filtered_data)+'\n')
+#data = pd.DataFrame(worksheet)
 
+new_data = sheet2.get_all_records(head=4, empty2zero=True)
+#print(new_data)
 
+print('herrrrrrrrrrrrrrrrrrrrrrrrrrrrre')
+new_data = pd.DataFrame(new_data)
+data = pd.DataFrame(worksheet.row_values(3))
+
+#print('herrrrrrrrrrrrrrrrrrrrrrrrrrrrre')
+#print(new_data.iloc[0])
 
 #建立SQLite資料庫
 conn = sqlite3.connect('studentID_userID.db', check_same_thread=False)
@@ -100,13 +111,15 @@ def handle_message(event):
     
     input_data = event.message.text.upper()
 
-    try :
-        #這裡移出來讀一次就好       
-        
+    try :              
         row = filtered_data.loc[filtered_data.iloc[:,2] == input_data]       
         data_dict = row.to_dict('list')
         
         if len(data_dict[2]) != 0 :
+            i = 0
+            if(len(row.iloc[0,0]) > 1):
+                i = 1
+            print('i am hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee : ' +str(len(row.iloc[0,0])))
             user_id = event.source.user_id
             print("user_id =", user_id)           
             name = row.iloc[0,3]
@@ -118,37 +131,28 @@ def handle_message(event):
             conn.commit()
             result = cursor.fetchone() #紀錄是否存在 用這個判斷
             print(result)
-
+            print(filtered_data)
             if(result == None):                
                 account_bubble = flex_account(stu_id, user_id)
                 line_bot_api.reply_message(event.reply_token, account_bubble)
-            else:
-                #reply_arr.append(TextSendMessage('學號已綁定!'))
-                #line_bot_api.reply_message(event.reply_token, TextSendMessage('是否要將學號綁定至Line帳號?'))
-            #if(re.search('否',input_data)):
-                #line_bot_api.reply_message(event.reply_token, TextSendMessage('取消綁定，請重新輸入學號。'))
-            #elif(re.search('是',input_data)):                   
-                #reply_arr.append(TextSendMessage('進行綁定中... 綁定完成!'))
-                #cursor.execute('INSERT INTO StudentID_UserID VALUES (?, ?)', (stu_id, user_id)) #將UserID和學號做綁定 並記錄在SQLite內
-                #conn.commit()
-                #sqlite3.SQLITE_UPDATE
+            else:               
                 cursor.execute('select * from StudentID_UserID where StudentID = ? AND UserID = ?', [stu_id, user_id]) #執行SQL語法 (判斷輸入學號是否match UserID)
                 conn.commit()
                 result = cursor.fetchone() #紀錄是否存在 用這個判斷
-                print(result)
+                #print(result)
                 if(result == None):
                     line_bot_api.reply_message(event.reply_token, TextSendMessage('您輸入的學號已被其他帳號綁定，有任何疑問請詢問助教或老師!'))
                 else:
-                    print(name)
-                    knowledge_subtotal = row.iloc[0,20]
-                    CoreValues_subtotal = row.iloc[0,29]
-                    attitude_subtotal = row.iloc[0,33]
+                    #print(name)
+                    knowledge_subtotal = row.iloc[0,-3]
+                    CoreValues_subtotal = row.iloc[0,-2]
+                    attitude_subtotal = row.iloc[0,-1]
                     picture(standar, filtered_data, stu_id) #產生圖表
                     print(filtered_data)
                 
                     values = [float(knowledge_subtotal), float(CoreValues_subtotal), float(attitude_subtotal)]
-
-                    url = 'https://5708-61-56-180-227.ngrok.io//static//'+ str(stu_id) +'.png'
+                    print(stu_id)
+                    url = ngrok_url + '//static//' + str(stu_id) +'.png'
                     print(url)
 
                     #reply_arr.append(flex_grade(url, values))

@@ -127,6 +127,7 @@ dmypy.json
 
 *# Pyre type checker
 .pyre/
+
 #圖片檔
 *.jpg
 *.png
@@ -147,3 +148,6 @@ cert/
 *.env
 *.ipynb
 ngrok.exe
+
+#測試用
+test.py

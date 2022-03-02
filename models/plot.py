@@ -263,7 +263,7 @@ def flex_choose():
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": "https://5708-61-56-180-227.ngrok.io//static//pog.png",
+    "url": "https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io//static//pog.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -395,7 +395,7 @@ def flex_account(stu_id, user_id):
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": "https://5708-61-56-180-227.ngrok.io//static//pog.png",
+    "url": "https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io//static//pog.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -572,7 +572,7 @@ def picture(standar, data, ID):
 
         fig.savefig('static//{}.png'.format(ID))
         plt.close()        
-        return 'https://5708-61-56-180-227.ngrok.io//static//{}.png'.format(ID)  
+        return 'https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io//static//{}.png'.format(ID)  
 
 def return_pass_subject(pass_subject):
     content="恭喜"
