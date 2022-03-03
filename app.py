@@ -23,7 +23,7 @@ channel_secret = os.getenv('LINE_CHANNEL_SECRET')
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
-ngrok_url = 'https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io'
+ngrok_url = 'https://61d9-61-56-180-227.ngrok.io'
 plt.switch_backend('agg') #不需要圖形介面的的backend
 plt.rcParams['font.sans-serif'] = ['TaipeiSansTCBeta-Regular'] #顯示中文字
 
@@ -36,9 +36,10 @@ standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
 # 讀取google sheets
 scope = ['https://www.googleapis.com/auth/spreadsheets'] # 移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
 creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
-sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
-spreadsheet_key_path = '16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ'
-sheet2 = gspread.authorize(creds).open_by_key(spreadsheet_key_path).sheet1
+#sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
+sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/1tQWP7hO65YALKUvx6G4r4UGWerVxqMaH-fTpjd7OrNQ/edit#gid=752433555')
+#spreadsheet_key_path = '16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ'
+#sheet2 = gspread.authorize(creds).open_by_key(spreadsheet_key_path).sheet1
 
 worksheet = sheet.get_worksheet(0)  
 data = pd.DataFrame(worksheet.get_all_values())
@@ -63,15 +64,16 @@ data_filter4 = data4.iloc[4:,:]
 
 filtered_data = pd.concat([data_filter, data_filter1, data_filter2, data_filter3, data_filter4]).fillna(0)
 filtered_data = filtered_data.replace('',0) # 成績單上不是數值型態
+filtered_data = filtered_data.replace('#DIV/0!',0)
 #print('looooooooooooooook!!!!!!!!!!!\n'+str(filtered_data)+'\n')
 #data = pd.DataFrame(worksheet)
 
-new_data = sheet2.get_all_records(head=4, empty2zero=True)
+#new_data = sheet2.get_all_records(head=4, empty2zero=True)
 #print(new_data)
 
-print('herrrrrrrrrrrrrrrrrrrrrrrrrrrrre')
-new_data = pd.DataFrame(new_data)
-data = pd.DataFrame(worksheet.row_values(3))
+#print('herrrrrrrrrrrrrrrrrrrrrrrrrrrrre')
+#new_data = pd.DataFrame(new_data)
+#data = pd.DataFrame(worksheet.row_values(3))
 
 #print('herrrrrrrrrrrrrrrrrrrrrrrrrrrrre')
 #print(new_data.iloc[0])

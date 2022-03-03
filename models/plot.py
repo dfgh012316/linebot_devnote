@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from linebot.models import FlexSendMessage, ButtonsTemplate, TemplateSendMessage
 
+ngrok_url = 'https://61d9-61-56-180-227.ngrok.io'
+
 def flex_grade(url, values):
     bubble = FlexSendMessage(
       alt_text = "你的成績",
@@ -263,7 +265,7 @@ def flex_choose():
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": "https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io//static//pog.png",
+    "url": ngrok_url + "//static//pog.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -395,7 +397,7 @@ def flex_account(stu_id, user_id):
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": "https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io//static//pog.png",
+    "url": ngrok_url + "//static//pog.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -498,10 +500,13 @@ def search_ID_DICT(data, ID):
 
 def judge(standar,data,ID):
     df=data.loc[data[2]==ID].fillna(0)
-    grade=[int(df[i]) for i in df.columns[6:9]]      #知識_40%	能力_40%	態度_20% 成績欄位  
+    #grade=[int(df[i]) for i in df.columns[6:9]]      #知識_40%	能力_40%	態度_20% 成績欄位  
+    grade = df.values[:,-3:].tolist()
     #subject=[i for i in df.columns[6:9]]             #科目
+    grade = [float(i) for i in grade[0]]
+    
     subject=['知識_40%', '能力_40%', '態度_20%']
-    student_dict=dict(zip(subject,grade))
+    student_dict=dict(zip(subject,grade))            #這裡list內的資料形態要注意
     pass_subject=[]   
     for i in subject :
         if standar[i]<=student_dict[i] :
@@ -530,19 +535,22 @@ def picture(standar, data, ID):
     else :
         df = data.loc[data[2]==ID].fillna(0)            #處理尚未填入成績的空欄位
         print(df)
-        grade = [int(df[i]) for i in df.columns[6:9]]      #知識_40%	能力_40%	態度_20% 成績欄位
-        
+        #grade = [i for i in df.iloc[-3:]]      #知識_40%	能力_40%	態度_20% 成績欄位
+        grade = df.values[:,-3:].tolist() #這裡list內的資料形態要注意
+        grade = [float(i) for i in grade[0]]
+
+        print(type(grade))
+        print(str(grade)+' gradeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
         #grade2=[int(df[i]) for i in df.columns[12:14]]    #自評知識	自評能力	自評態度 給學生選用的欄位 學期末才會自評
         #subject = [i for i in df.columns[6:9]]
-
         subject = ['知識_40%', '能力_40%', '態度_20%']
         x=np.arange(len(subject)) #取得科目數量
-        
         width=0.35
         fig,ax=plt.subplots()
+        
         rects1 = ax.bar(x + width/2, grade, width, color='#84C1FF')   #學生目前成績
         #rects2 = ax.bar(x - width/2, grade2, width, color='#BE77FF')  #學生自評
-
+        
         ax.set_ylabel('成績')
         ax.set_title(ID)
         ax.set_xticks(x)
@@ -560,7 +568,6 @@ def picture(standar, data, ID):
                     size=20)
         autolabel(rects1)
         #autolabel(rects2)
-
         fig.tight_layout()
 
         pass_list = plot_judge(standar, data, ID)
@@ -572,7 +579,7 @@ def picture(standar, data, ID):
 
         fig.savefig('static//{}.png'.format(ID))
         plt.close()        
-        return 'https://7d0b-2401-e180-8892-1b13-c2d-837f-7f22-de61.ngrok.io//static//{}.png'.format(ID)  
+        return ngrok_url + '//static//{}.png'.format(ID)  
 
 def return_pass_subject(pass_subject):
     content="恭喜"
@@ -588,7 +595,7 @@ if __name__ == '__main__':
     plt.rcParams['font.sans-serif'] = ['TaipeiSansTCBeta-Regular.ttf'] #顯示中文字
     #data=create_data()
     #data = create_sheet()
-    standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
+    standar = {'知識_40%':80,'能力_40%':70,'態度_20%':60}
     #print(data)
     #print(picture(standar,data,'B0742024'))
     #print(flex_grade(data,'B0742024',picture(standar,data,'B0742024')))

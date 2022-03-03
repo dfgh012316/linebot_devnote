@@ -151,3 +151,4 @@ ngrok.exe
 
 #測試用
 test.py
+*.db
