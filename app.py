@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,ImageSendMessage,StickerSendMessage,PostbackEvent)
-from models.plot import flex_account, flex_choose, flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
+from models.plot import flex_Addition, flex_PPT, flex_PSY_A, flex_PSY_B, flex_MHD_A, flex_MHD_B, flex_IRW, flex_Social, flex_account, flex_choose, flex_simple, picture,judge,return_pass_subject,create_data,search_ID_DICT,flex_grade
 import pandas as pd
 import re
 from google.oauth2.service_account import Credentials
@@ -37,7 +37,7 @@ standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
 scope = ['https://www.googleapis.com/auth/spreadsheets'] # 移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
 creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
 #sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
-sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/1tQWP7hO65YALKUvx6G4r4UGWerVxqMaH-fTpjd7OrNQ/edit#gid=752433555')
+sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16cNV51aHsdY5zoXyQ5LJhsZKpEx4YFeASFq-2OHkqAo/edit#gid=752433555')
 #spreadsheet_key_path = '16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ'
 #sheet2 = gspread.authorize(creds).open_by_key(spreadsheet_key_path).sheet1
 
@@ -225,14 +225,33 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage('進行綁定中... 綁定完成!'))
     elif edata['answer'] == 'no' :
         line_bot_api.reply_message(event.reply_token, TextSendMessage('取消綁定，請重新操作。'))
-    elif event.postback.data == '課程簡報' :
-        line_bot_api.reply_message(
-            event.reply_token,TextSendMessage("https://drive.google.com/drive/folders/1nP_q78_ZGVspPW3FgKP4Uy1HZIz7Exjk?usp=sharing")
-        )
-    elif event.postback.data == '補充教材' :
-        line_bot_api.reply_message(
-            event.reply_token,TextSendMessage("https://drive.google.com/drive/folders/15yB50RwCJ-Qu8iz5PjpxrsDQmBrZyoin?usp=sharing")
-        )
+    elif edata['action'] == '作業繳交' :
+        choose_bubble = flex_choose()
+        line_bot_api.reply_message(event.reply_token, choose_bubble)
+    elif edata['action'] == '心理學a':
+        action_bubble = flex_PSY_A()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
+    elif edata['action'] == '心理學b':
+        action_bubble = flex_PSY_B()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
+    elif edata['action'] == '心理健康a':
+        action_bubble = flex_MHD_A()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
+    elif edata['action'] == '心理健康b':
+        action_bubble = flex_MHD_B()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
+    elif edata['action'] == '職場/蘭陽采風':
+        action_bubble = flex_IRW()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
+    elif edata['action'] == '社會脈動':
+        action_bubble = flex_Social()
+        line_bot_api.reply_message(event.reply_token, action_bubble)    
+    elif edata['action'] == '課程簡報' :
+        action_bubble = flex_PPT()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
+    elif edata['action'] == '補充教材' :
+        action_bubble = flex_Addition()
+        line_bot_api.reply_message(event.reply_token, action_bubble)
     elif event.postback.data == '課程規定' :
         line_bot_api.reply_message(
             event.reply_token,TextSendMessage("https://drive.google.com/drive/folders/1fOI8PBk8spp1D_d3CNtruz-c3XsNuXlV?usp=sharing")

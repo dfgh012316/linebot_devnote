@@ -265,7 +265,7 @@ def flex_choose():
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": ngrok_url + "//static//pog.png",
+    "url": ngrok_url + "//static//homework.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -315,9 +315,10 @@ def flex_choose():
       {
         "type": "button",
         "action": {
-          "type": "uri",
+          "type": "postback",
           "label": "1.心理學a",
-          "uri": "https://mega.nz/megadrop/ED70WpkW8nE"
+          "text": " ",
+          "data": 'action=心理學a&answer=NA'
         },
         "color": "#905C44",
         "style": "primary",
@@ -326,9 +327,10 @@ def flex_choose():
       {
         "type": "button",
         "action": {
-          "type": "uri",
+          "type": "postback",
           "label": "2.心理學b",
-          "uri": "https://mega.nz/megadrop/cxfVCZ4hUig"
+          "text": " ",
+          "data": 'action=心理學b&answer=NA'
         },
         "color": "#905C44",
         "style": "primary"
@@ -336,9 +338,10 @@ def flex_choose():
       {
         "type": "button",
         "action": {
-          "type": "uri",
+          "type": "postback",
           "label": "3.心理健康a",
-          "uri": "https://drive.google.com/drive/folders/1HWGrFqMOepC_wxzVT10zgVNxKt-ba1nJ"
+          "text": " ",
+          "data": 'action=心理健康a&answer=NA'
         },
         "color": "#905C44",
         "style": "primary"
@@ -346,9 +349,10 @@ def flex_choose():
       {
         "type": "button",
         "action": {
-          "type": "uri",
-          "label": "4.心理健康b",
-          "uri": "https://drive.google.com/drive/folders/1TEfLeDF_DRz2OzV4h9oeai7bgOV2xseM"
+          "type": "postback",
+          "label": "3.心理健康b",
+          "text": " ",
+          "data": 'action=心理健康b&answer=NA'
         },
         "color": "#905C44",
         "style": "primary"
@@ -356,9 +360,10 @@ def flex_choose():
       {
         "type": "button",
         "action": {
-          "type": "uri",
-          "label": " 5.職場/蘭陽采風",
-          "uri": "https://drive.google.com/drive/folders/1nkANts776Hc76LGneUj2V9B3-JqVhLuV"
+          "type": "postback",
+          "label": "5.職場/蘭陽采風",
+          "text": " ",
+          "data": 'action=職場/蘭陽采風&answer=NA'
         },
         "color": "#905C44",
         "style": "primary"
@@ -366,9 +371,10 @@ def flex_choose():
       {
         "type": "button",
         "action": {
-          "type": "uri",
+          "type": "postback",
           "label": "6.社會脈動",
-          "uri": "https://drive.google.com/drive/folders/1DWH7-5yA0pJFeVwUHTfOdp41HLJjOhpf"
+          "text": " ",
+          "data": 'action=社會脈動&answer=NA'
         },
         "color": "#905C44",
         "style": "primary"
@@ -388,7 +394,7 @@ def flex_choose():
 
 
 
-def flex_account(stu_id, user_id):
+def flex_PSY_A():
   bubble = FlexSendMessage(
       alt_text = "課程按鈕",
       contents ={
@@ -397,7 +403,619 @@ def flex_account(stu_id, user_id):
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": ngrok_url + "//static//pog.png",
+    "url": ngrok_url+"//static//link.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "要繳交哪一份作業呢?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "您選擇了心理學A",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "平時作業",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSd06M587hWgJwuJBPYrUh6wUckCBWQNGtrnwlvcEqXZBwkXeA/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期中報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSeE6R4Bo8DzBXS1gTmJ4QvA62SUIawtIIh6QXFymv_JD4o_2g/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期末報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSfw67-G1_T-m_jmOnFIAeArCZ4wY__w_mEsGhM7i_le4ZDXZg/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+
+  return bubble
+
+
+
+def flex_PSY_B():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": ngrok_url+"//static//link.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "要繳交哪一份作業呢?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "您選擇了心理學B",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "平時作業",
+          "uri": "https://www.dropbox.com/request/lQ3fvTZ5OMcbaWvE5fRH"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期中報告",
+          "uri": "https://www.dropbox.com/request/IEdYEAaiFpM2YfjQQPtF"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期末報告",
+          "uri": "https://www.dropbox.com/request/4pkl5kG3B5q7o4XrnjgI"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  
+  return bubble
+
+
+
+def flex_MHD_A():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": ngrok_url+"//static//link.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "要繳交哪一份作業呢?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "您選擇了心理健康A",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "平時作業",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSc6JWL4G2V5rwISYLb6YJywJfd5p3ZcgEmqv5NzSzaERuF50Q/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期中報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSehfQaIVCF13q-hwsJyqhtKvrx0_bP2i0r44AWyf7Lay1fyXw/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期末報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLScNFko8jEiUsjtsgGT5t2ZUHTDR5Z6rkOKIXV25zqujdRs9GA/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  
+  return bubble
+
+
+
+def flex_MHD_B():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": ngrok_url+"//static//link.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "要繳交哪一份作業呢?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "您選擇了心理健康B",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "平時作業",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSeGaujit1YH4QUR12iau88dcagn7AK3zUfhlhIS_dJYLIiB0Q/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期中報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSezD5MFqK2nFeO1wxyZ9qdJpefIgZRqX-HGkU6S01y4d7HIFA/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期末報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSd9X47JWKVBAe8kP4VtJwEOJT0yv4B6FsLUgVexM2sRlI5eNA/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  
+  return bubble
+
+
+
+def flex_IRW():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": ngrok_url+"//static//link.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "要繳交哪一份作業呢?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "您選擇了職場/蘭陽采風",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "平時作業",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSd5dPzG6TJsAiDLGb1Pc11jIzBqL9HaDeKqepqEsPgEyMrsBA/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期中報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSdh2CvxXnEATWvhZ8nY18T9Xcn0cSHSl-6uNzWDrDqe--ARWQ/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期末報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSfEKaMiSCetvyDs3kbYmbFkJnz_XJBtWWWoaOLfdIGzOaUBew/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  
+  return bubble 
+
+
+
+def flex_Social():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": ngrok_url+"//static//link.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "要繳交哪一份作業呢?",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "您選擇了社會脈動",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "平時作業",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSdg7Dwou5aHQxdc810cLO11EBd9dCqPlOfp0IgYGOzpK--Qhg/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期中報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSevfGLB1c4P_oXXjPATZMSJHKvDjDiBt0VuanxXFnsActelJg/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "期末報告",
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSc5cfYUDHrnMa0yUKU1UVi6QgU1hTCVcdkI9-TDpd_1Oeyuxw/viewform?usp=sf_link"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  
+  return bubble
+
+
+
+def flex_account(stu_id, user_id):  
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": ngrok_url + "//static//bind.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",
@@ -441,7 +1059,7 @@ def flex_account(stu_id, user_id):
           "type": "postback",
           "label": "確定綁定",
           "text": " ",
-          "data": 'answer=yes&stu_id='+stu_id+'&user_id='+user_id
+          "data": 'action=NA&answer=yes&stu_id='+stu_id+'&user_id='+user_id
         },
         "color": "#905C44",
         "style": "primary"
@@ -452,7 +1070,209 @@ def flex_account(stu_id, user_id):
           "type": "postback",
           "label": "取消綁定",
           "text": " ",
-          "data": 'answer=no'
+          "data": 'action=NA&answer=no'
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  return bubble
+  
+
+
+def flex_PPT():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": "https://0cb4-61-56-180-227.ngrok.io//static//pog.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "課程簡報",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "請選擇課程",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "心理學",
+          "uri": "https://drive.google.com/drive/folders/1eNZvfEYThdsacEro9AlQt-0rHtpjK3l9?usp=sharing"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "心理健康",
+          "uri": "https://drive.google.com/drive/folders/1eT6IwpapjPj1nbJwIsyvQShZRNOlzFlM?usp=sharing"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "職場與人際關係",
+          "uri": "https://drive.google.com/drive/folders/1ruXW77yG_V0jCBhQkB6WXlobP67donCn?usp=sharing"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      }
+    ]
+  },
+  "styles": {
+    "footer": {
+      "backgroundColor": "#E6E1ABFF",
+      "separator": False,
+      "separatorColor": "#FFFFFFFF"
+    }
+  }
+}
+  )
+  return bubble
+  
+
+
+def flex_Addition():
+  bubble = FlexSendMessage(
+      alt_text = "課程按鈕",
+      contents ={
+  "type": "bubble",
+  "size": "mega",
+  "direction": "ltr",
+  "hero": {
+    "type": "image",
+    "url": "https://0cb4-61-56-180-227.ngrok.io//static//pog.png",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "fit",
+    "backgroundColor": "#F9BFEAFF",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    }
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "md",
+    "action": {
+      "type": "uri",
+      "label": "Action",
+      "uri": "https://linecorp.com"
+    },
+    "contents": [
+      {
+        "type": "text",
+        "text": "補充教材",
+        "weight": "bold",
+        "size": "xl",
+        "contents": []
+      },
+      {
+        "type": "text",
+        "text": "請選擇課程",
+        "weight": "regular",
+        "size": "lg",
+        "color": "#726C6CFF",
+        "wrap": True,
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "心理學",
+          "uri": "https://drive.google.com/drive/folders/0B5xUZ5W4szenYXhYb21Ua2t3NE0?resourcekey=0-hPkpJYZfmmRkpft3DKx35w&usp=sharing"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "心理健康",
+          "uri": "https://drive.google.com/drive/folders/0B5xUZ5W4szenZGo3RXlaa3ZzWWs?resourcekey=0-h97IDu1MRrfkEseIWBLklA&usp=sharing"
+        },
+        "color": "#905C44",
+        "style": "primary"
+      },
+      {
+        "type": "button",
+        "action": {
+          "type": "uri",
+          "label": "職場與人際關係",
+          "uri": "https://drive.google.com/drive/folders/0B5xUZ5W4szenLThOSFNlS0QwNTA?resourcekey=0-r5tN3Oha4rcmkfxkMEGnFg&usp=sharing"
         },
         "color": "#905C44",
         "style": "primary"
@@ -480,14 +1300,6 @@ def create_data():
         df = pd.concat([df, data.get(s_name)], ignore_index=False)
     
     return df
-
-
-
-#def create_sheet():
-#    data = pd.DataFrame(filtered_data)
-#     
-#    return data
-
 
 def search_ID_DICT(data, ID):
     try:
