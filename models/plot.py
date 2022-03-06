@@ -557,7 +557,7 @@ def flex_PSY_B():
         "action": {
           "type": "uri",
           "label": "平時作業",
-          "uri": "https://www.dropbox.com/request/lQ3fvTZ5OMcbaWvE5fRH"
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSe-6OEFgZuzUx3t7pV3h94b2VDTWhhGXLNnwVdo3jhP4_ImIw/viewform?usp=sf_link"
         },
         "color": "#905C44",
         "style": "primary"
@@ -567,7 +567,7 @@ def flex_PSY_B():
         "action": {
           "type": "uri",
           "label": "期中報告",
-          "uri": "https://www.dropbox.com/request/IEdYEAaiFpM2YfjQQPtF"
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSeOsRUUtMF_pxl_BWaOrlOxyPntNi8aOHxdtFvvD2RVGmj7Zw/viewform?usp=sf_link"
         },
         "color": "#905C44",
         "style": "primary"
@@ -577,7 +577,7 @@ def flex_PSY_B():
         "action": {
           "type": "uri",
           "label": "期末報告",
-          "uri": "https://www.dropbox.com/request/4pkl5kG3B5q7o4XrnjgI"
+          "uri": "https://docs.google.com/forms/d/e/1FAIpQLSeJ-yN4MpVHNFaDXjUfQJ1MKA9GRjyJ4ZEcvVGpo9gZXAbqLg/viewform?usp=sf_link"
         },
         "color": "#905C44",
         "style": "primary"
@@ -1099,7 +1099,7 @@ def flex_PPT():
   "direction": "ltr",
   "hero": {
     "type": "image",
-    "url": "https://0cb4-61-56-180-227.ngrok.io//static//pog.png",
+    "url": ngrok_url+"//static//PPT.png",
     "size": "full",
     "aspectRatio": "20:13",
     "aspectMode": "fit",

@@ -37,7 +37,7 @@ standar = {'知識_40%':100,'能力_40%':70,'態度_20%':60}
 scope = ['https://www.googleapis.com/auth/spreadsheets'] # 移出來讀一次就好，太耗效能 (成績有更動請重新啟動linebot)
 creds = Credentials.from_service_account_file("linear-outcome-339410-10f813b7e005.json", scopes=scope)
 #sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ/edit#gid=0')
-sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/16cNV51aHsdY5zoXyQ5LJhsZKpEx4YFeASFq-2OHkqAo/edit#gid=752433555')
+sheet = gspread.authorize(creds).open_by_url('https://docs.google.com/spreadsheets/d/1ZBCj7Rno-c4WX2auIB7mESEm17dXBCylNs6I8nikIfs/edit#gid=752433555')
 #spreadsheet_key_path = '16EYLZIy5aOsCNXav9I3Oc-Av67R6lDK0uDfowvV4HNQ'
 #sheet2 = gspread.authorize(creds).open_by_key(spreadsheet_key_path).sheet1
 
@@ -225,9 +225,9 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage('進行綁定中... 綁定完成!'))
     elif edata['answer'] == 'no' :
         line_bot_api.reply_message(event.reply_token, TextSendMessage('取消綁定，請重新操作。'))
-    elif edata['action'] == '作業繳交' :
-        choose_bubble = flex_choose()
-        line_bot_api.reply_message(event.reply_token, choose_bubble)
+    #elif edata['action'] == '作業繳交' :
+    #    choose_bubble = flex_choose()
+    #    line_bot_api.reply_message(event.reply_token, choose_bubble)
     elif edata['action'] == '心理學a':
         action_bubble = flex_PSY_A()
         line_bot_api.reply_message(event.reply_token, action_bubble)
