@@ -127,6 +127,7 @@ dmypy.json
 
 *# Pyre type checker
 .pyre/
+
 #圖片檔
 *.jpg
 *.png
@@ -143,3 +144,11 @@ dmypy.json
 Dockerfile
 cert/
 *.crt
+*.json
+*.env
+*.ipynb
+ngrok.exe
+
+#測試用
+test.py
+*.db
